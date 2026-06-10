@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Configurazione della pagina
-st.set_page_config(page_title="LVDVS HISTORIAE", page_icon="🏛️", layout="wide")
+st.set_page_config(page_title="LE OLIMPIADI DELLA STORIA", page_icon="🏛️", layout="wide")
 
 # --- STILE CSS PERSONALIZZATO (Estetica Tempio Antico) ---
 st.markdown("""
