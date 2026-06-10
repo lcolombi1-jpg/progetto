@@ -144,7 +144,7 @@ QUIZ_DATA = {
             },
             {
                 "q": "Nel poema 'Le opere e i giorni' di Esiodo, quale valore viene esaltato come motore positivo per lo sviluppo della società?",
-                "options": ["La guerra d'espansione", "L'emulazione/competizione sul lavoro", "L'ozio dei nobles", "La ricchezza intrinseca dei mercanti"],
+                "options": ["La guerra d'espansione", "L'emulazione/competizione sul lavoro", "L'ozio dei nobili", "La ricchezza intrinseca dei mercanti"],
                 "answer": "L'emulazione/competizione sul lavoro",
                 "explanation": "Esiodo celebra la contesa buona, ovvero l'emulazione virtuosa che stimola l'individuo a impegnarsi nel lavoro onesto."
             }
@@ -216,9 +216,25 @@ QUIZ_DATA = {
                 "q": "Quale filosofo criticò l'antropomorfismo religioso dicendo che se i buoi o i cavalli avessero le mani disegnerebbero dèi a loro somiglianza?",
                 "options": ["Pitagora", "Senofane di Colofone", "Eraclito", "Parmenide"],
                 "answer": "Senofane di Colofone",
-                "explanation": "Senofane relativizzò la religione tradicional greca criticando l'abitudine umana di immaginare gli dèi con sembianze antropomorfe."
+                "explanation": "Senofane relativizzò la religione tradizionale greca criticando l'abitudine umana di immaginare gli dèi con sembianze antropomorfe."
             }
         ]
+    }
+}
+
+# TESTI DEI BANNER PER OGNI LIVELLO
+BANNERS = {
+    1: {
+        "title": "CORONA DI QUERCIA OTTENUTA",
+        "text": "Hai superato il primo traguardo! I segreti dell'Età Arcaica sono tuoi. La via per la Magna Grecia è aperta."
+    },
+    2: {
+        "title": "CORONA DI PINO OTTENUTA",
+        "text": "Eccellente! Hai dominato le sfide delle póleis e guidato i coloni con sapienza. Gli oracoli attendono il tuo arrivo."
+    },
+    3: {
+        "title": "CORONA DI ALLORO SACRO",
+        "text": "Trionfo assoluto! Hai raggiunto la sapienza dei sommi filosofi e il favore degli dèi. Sei un Campione delle Olimpiadi della Storia!"
     }
 }
 
@@ -253,6 +269,8 @@ with col_pillar_right:
 with col_main:
     st.write("### Seleziona il tuo livello:")
     lvl_cols = st.columns(3)
+    
+    # Renderizza i bottoni di livello basandosi sullo stato attuale
     for i in range(1, 4):
         with lvl_cols[i-1]:
             is_locked = i > st.session_state.max_unlocked_level
@@ -293,15 +311,25 @@ with col_main:
             
             st.info(f"📜 *Approfondimento:* {current_q['explanation']}")
             
+            # Bottone per andare avanti
             if st.button("Continua il cammino ➡️", key=f"next_btn_{q_idx}"):
+                # Calcola il punteggio temporaneo
+                temp_score = st.session_state.level_score
                 if user_choice == current_q["answer"]:
-                    st.session_state.level_score += 1
+                    temp_score += 1
+                    st.session_state.level_score = temp_score
                 
                 st.session_state.show_feedback = False
-                if q_idx < 4:
-                    st.session_state.current_question_idx += 1
-                else:
+                
+                # Se era l'ultima domanda, aggiorna i livelli SUBITO prima del rerun
+                if q_idx >= 4:
                     st.session_state.quiz_completed = True
+                    # FIX: Aggiorna il max_unlocked_level istantaneamente qui!
+                    if temp_score >= 4 and lvl < 3 and st.session_state.max_unlocked_level == lvl:
+                        st.session_state.max_unlocked_level = lvl + 1
+                else:
+                    st.session_state.current_question_idx += 1
+                    
                 st.rerun()
                 
     else:
@@ -313,17 +341,17 @@ with col_main:
         if final_score >= 4:
             st.balloons()
             
-            # BANNER PERSONALIZZATO DI VITTORIA AL SUPERAMENTO
+            # BANNER DINAMICO PER OGNI LIVELLO
+            banner_info = BANNERS[lvl]
             st.markdown(f"""
                 <div class='banner-eccellenza'>
-                    <h2>VICTORIA ACQUISITA</h2>
-                    <p>Hai dimostrato sapienza degna dei Sette Sapienti. Il {QUIZ_DATA[lvl]['title'].split(':')[0]} è stato superato con successo!</p>
+                    <h2>{banner_info["title"]}</h2>
+                    <p>{banner_info["text"]}</p>
                 </div>
             """, unsafe_allow_html=True)
             
-            if lvl < 3 and st.session_state.max_unlocked_level == lvl:
-                st.session_state.max_unlocked_level = lvl + 1
-                st.info("Nuovo Livello Sbloccato! Seleziona il livello successivo in alto per procedere.")
+            if lvl < 3:
+                st.info("Nuovo Livello Sbloccato! Seleziona il Livello successivo nei bottoni in cima alla pagina.")
         else:
             st.error("Per sbloccare il livello successivo o completare il percorso devi indovinarne almeno 4 su 5.")
             if st.button("Riprova questo livello 🔄"):
