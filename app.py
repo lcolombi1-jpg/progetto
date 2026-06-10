@@ -1,9 +1,9 @@
 import streamlit as st
 
 # Configurazione della pagina
-st.set_page_config(page_title="LE OLIMPIADI DELLA STORIA", page_icon="🏛️", layout="wide")
+st.set_page_config(page_title="LE OLIMPIADI DELLA STORIA", page_icon="📜", layout="wide")
 
-# --- STILE CSS PERSONALIZZATO (Estetica Tempio Antico) ---
+# --- STILE CSS AVANZATO (Colonne Realistiche e Banner) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Fauna+One&display=swap');
@@ -22,22 +22,44 @@ st.markdown("""
         text-align: center;
     }
     
-    /* Colonne del Tempio (Simulate via CSS) */
+    /* --- COLONNE REALISTICHE (Scanalature + Capitelli) --- */
     .pillar-left, .pillar-right {
-        background: linear-gradient(90deg, #e0d5c1 0%, #fffdfa 50%, #e0d5c1 100%);
-        border-left: 2px solid #bfa16f;
-        border-right: 2px solid #bfa16f;
-        height: 80vh;
-        box-shadow: 3px 0px 10px rgba(0,0,0,0.1);
-        border-radius: 4px;
+        height: 75vh;
         position: relative;
+        background-color: #f2ede2;
+        /* Effetto scanalature (Fluting) tramite gradienti combinati */
+        background-image: 
+            linear-gradient(90deg, rgba(140, 109, 49, 0.25) 0%, transparent 50%, rgba(140, 109, 49, 0.25) 100%),
+            repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(0,0,0,0.06) 11px, rgba(0,0,0,0.1) 13px, transparent 14px);
+        border-left: 2px solid #8c6d31;
+        border-right: 2px solid #8c6d31;
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.05), 4px 8px 20px rgba(0,0,0,0.15);
+        margin-top: 30px;
     }
+    
+    /* Capitello Dorico/Ionico (Parte Superiore) */
     .pillar-left::before, .pillar-right::before {
-        content: "🏛️";
-        font-size: 24px;
+        content: "";
         position: absolute;
-        top: -10px;
-        left: 25%;
+        top: -18px; left: -15%; right: -15%;
+        height: 20px;
+        background: linear-gradient(180deg, #d1c4ae 0%, #bfa16f 100%);
+        border-bottom: 4px solid #8c6d31;
+        border-top: 2px solid #e8e2d5;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        border-radius: 2px;
+    }
+    
+    /* Base della Colonna (Parte Inferiore) */
+    .pillar-left::after, .pillar-right::after {
+        content: "";
+        position: absolute;
+        bottom: -18px; left: -10%; right: -10%;
+        height: 22px;
+        background: linear-gradient(180deg, #bfa16f 0%, #8c6d31 100%);
+        border-top: 4px solid #8c6d31;
+        box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+        border-radius: 2px;
     }
     
     /* Contenitore principale del Quiz (Cella del Tempio) */
@@ -62,10 +84,36 @@ st.markdown("""
         background-color: #bfa16f !important;
         transform: scale(1.02);
     }
+
+    /* --- BANNER DI VITTORIA LIVELLO --- */
+    .banner-eccellenza {
+        background: linear-gradient(135deg, #8c6d31 0%, #bfa16f 50%, #8c6d31 100%);
+        color: #fffdfa !important;
+        padding: 25px;
+        text-align: center;
+        border-radius: 8px;
+        font-family: 'Cinzel', serif;
+        border: 3px double #fffdfa;
+        box-shadow: 0px 8px 25px rgba(140, 109, 49, 0.4);
+        margin-top: 15px;
+        margin-bottom: 25px;
+    }
+    .banner-eccellenza h2 {
+        color: #fffdfa !important;
+        margin: 0 0 8px 0 !important;
+        font-size: 26px;
+        letter-spacing: 3px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    }
+    .banner-eccellenza p {
+        font-size: 16px;
+        margin: 0;
+        font-style: italic;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# --- DATABASE DELLE DOMANDE (Basato sulla fonte condivisa) ---
+# --- DATABASE DELLE DOMANDE ---
 QUIZ_DATA = {
     1: {
         "title": "Livello I: Le Stirpi e le Origini dell'Età Arcaica",
@@ -96,7 +144,7 @@ QUIZ_DATA = {
             },
             {
                 "q": "Nel poema 'Le opere e i giorni' di Esiodo, quale valore viene esaltato come motore positivo per lo sviluppo della società?",
-                "options": ["La guerra d'espansione", "L'emulazione/competizione sul lavoro", "L'ozio dei nobili", "La ricchezza intrinseca dei mercanti"],
+                "options": ["La guerra d'espansione", "L'emulazione/competizione sul lavoro", "L'ozio dei nobles", "La ricchezza intrinseca dei mercanti"],
                 "answer": "L'emulazione/competizione sul lavoro",
                 "explanation": "Esiodo celebra la contesa buona, ovvero l'emulazione virtuosa che stimola l'individuo a impegnarsi nel lavoro onesto."
             }
@@ -168,13 +216,13 @@ QUIZ_DATA = {
                 "q": "Quale filosofo criticò l'antropomorfismo religioso dicendo che se i buoi o i cavalli avessero le mani disegnerebbero dèi a loro somiglianza?",
                 "options": ["Pitagora", "Senofane di Colofone", "Eraclito", "Parmenide"],
                 "answer": "Senofane di Colofone",
-                "explanation": "Senofane relativizzò la religione tradizionale greca criticando l'abitudine umana di immaginare gli dèi con sembianze antropomorfe."
+                "explanation": "Senofane relativizzò la religione tradicional greca criticando l'abitudine umana di immaginare gli dèi con sembianze antropomorfe."
             }
         ]
     }
 }
 
-# --- INIZIALIZZAZIONE STATI DI GIOCO (Session State) ---
+# --- INIZIALIZZAZIONE STATI DI GIOCO ---
 if "max_unlocked_level" not in st.session_state:
     st.session_state.max_unlocked_level = 1
 if "active_level" not in st.session_state:
@@ -188,11 +236,11 @@ if "quiz_completed" not in st.session_state:
 if "show_feedback" not in st.session_state:
     st.session_state.show_feedback = False
 
-# --- LAYOUT ESTETICO DEL TEMPIO ---
-st.write("<h1>🏛️ LE OLIMPIADI DELLA STORIA 🏛️</h1>", unsafe_allow_html=True)
+# --- LAYOUT STRUTTURALE ---
+st.write("<h1>LE OLIMPIADI DELLA STORIA</h1>", unsafe_allow_html=True)
 st.write("<p style='text-align:center; font-style:italic;'>Mettiti alla prova con le cronache e gli orizzonti della storia greca arcaica!</p>", unsafe_allow_html=True)
 
-# Layout a 3 colonne per posizionare i pilastri del tempio ai lati
+# Layout a 3 colonne per le colonne sceniche e il corpo centrale
 col_pillar_left, col_main, col_pillar_right = st.columns([1, 6, 1])
 
 with col_pillar_left:
@@ -203,13 +251,12 @@ with col_pillar_right:
 
 # --- BLOCCO CENTRALE DEL QUIZ ---
 with col_main:
-    # Selezione del livello tramite bottoni abilitati/disabilitati
-    st.write("### 🧭 Seleziona il tuo livello:")
+    st.write("### Seleziona il tuo livello:")
     lvl_cols = st.columns(3)
     for i in range(1, 4):
         with lvl_cols[i-1]:
             is_locked = i > st.session_state.max_unlocked_level
-            label = f"🔓 Livello {i}" if not is_locked else f"🔒 Livello {i} (Bloccato)"
+            label = f"Livello {i}" if not is_locked else f"Livello {i} (Bloccato)"
             if st.button(label, key=f"btn_lvl_{i}", disabled=is_locked, use_container_width=True):
                 st.session_state.active_level = i
                 st.session_state.current_question_idx = 0
@@ -220,13 +267,12 @@ with col_main:
 
     st.markdown("<hr style='border:1px solid #bfa16f;'>", unsafe_allow_html=True)
 
-    # Gestione dello svolgimento del quiz
     lvl = st.session_state.active_level
     questions = QUIZ_DATA[lvl]["questions"]
     q_idx = st.session_state.current_question_idx
 
     st.markdown(f"<div class='quiz-box'>", unsafe_allow_html=True)
-    st.write(f"### ⚡ {QUIZ_DATA[lvl]['title']}")
+    st.write(f"### {QUIZ_DATA[lvl]['title']}")
     
     if not st.session_state.quiz_completed:
         st.write(f"**Domanda {q_idx + 1} di 5**")
@@ -234,26 +280,20 @@ with col_main:
         
         st.write(f"#### {current_q['q']}")
         
-        # Form per inviare la risposta in modo controllato
         with st.form(key=f"q_form_{lvl}_{q_idx}"):
             user_choice = st.radio("Scegli la risposta corretta:", current_q["options"], key=f"radio_{lvl}_{q_idx}")
-            submit_answer = st.form_submit_button(label="Invia Risposta 🏛️")
+            submit_answer = st.form_submit_button(label="Invia Risposta")
             
         if submit_answer or st.session_state.show_feedback:
             st.session_state.show_feedback = True
             if user_choice == current_q["answer"]:
-                st.success(f"🎯 **Risposta Corretta!**")
-                if not submit_answer: # Evita doppie aggiunte al punteggio sul rerun
-                    pass
+                st.success(f"**Risposta Corretta!**")
             else:
-                st.error(f"❌ **Risposta Errata!** La risposta corretta era: *{current_q['answer']}*")
+                st.error(f"**Risposta Errata!** La risposta corretta era: *{current_q['answer']}*")
             
             st.info(f"📜 *Approfondimento:* {current_q['explanation']}")
             
-            # Pulsante per avanzare alla domanda successiva
             if st.button("Continua il cammino ➡️", key=f"next_btn_{q_idx}"):
-                if user_choice == current_q["answer"] and not submit_answer:
-                    pass
                 if user_choice == current_q["answer"]:
                     st.session_state.level_score += 1
                 
@@ -267,17 +307,25 @@ with col_main:
     else:
         # Schermata Finale del Livello
         final_score = st.session_state.level_score
-        st.write("### 🏺 Resoconto della Prova")
+        st.write("### Resoconto della Prova")
         st.write(f"Hai risposto correttamente a **{final_score}** domande su **5**.")
         
         if final_score >= 4:
             st.balloons()
-            st.success("🎉 **Per l'alloro di Olimpia!** Hai superato brillantemente il livello!")
+            
+            # BANNER PERSONALIZZATO DI VITTORIA AL SUPERAMENTO
+            st.markdown(f"""
+                <div class='banner-eccellenza'>
+                    <h2>VICTORIA ACQUISITA</h2>
+                    <p>Hai dimostrato sapienza degna dei Sette Sapienti. Il {QUIZ_DATA[lvl]['title'].split(':')[0]} è stato superato con successo!</p>
+                </div>
+            """, unsafe_allow_html=True)
+            
             if lvl < 3 and st.session_state.max_unlocked_level == lvl:
                 st.session_state.max_unlocked_level = lvl + 1
-                st.write("🔓 **Nuovo Livello Sbloccato!** Scegli il livello successivo in alto.")
+                st.info("Nuovo Livello Sbloccato! Seleziona il livello successivo in alto per procedere.")
         else:
-            st.error("📉 **Gli dèi ti invitano a ripassare!** Per sbloccare il livello successivo devi indovinarne almeno 4 su 5.")
+            st.error("Per sbloccare il livello successivo o completare il percorso devi indovinarne almeno 4 su 5.")
             if st.button("Riprova questo livello 🔄"):
                 st.session_state.current_question_idx = 0
                 st.session_state.level_score = 0
