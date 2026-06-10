@@ -189,7 +189,7 @@ if "show_feedback" not in st.session_state:
     st.session_state.show_feedback = False
 
 # --- LAYOUT ESTETICO DEL TEMPIO ---
-st.write("<h1>🏛️ LVDVS HISTORIAE 🏛️</h1>", unsafe_allow_html=True)
+st.write("<h1>🏛️ LE OLIMPIADI DELLA STORIA 🏛️</h1>", unsafe_allow_html=True)
 st.write("<p style='text-align:center; font-style:italic;'>Mettiti alla prova con le cronache e gli orizzonti della storia greca arcaica!</p>", unsafe_allow_html=True)
 
 # Layout a 3 colonne per posizionare i pilastri del tempio ai lati
